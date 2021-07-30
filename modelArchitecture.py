@@ -1,4 +1,6 @@
 import json
+
+from tensorflow.python.keras.layers.core import Dense
 f = open('userDefinedParameters.json','r')
 param = json.load(f)
 f.close()
@@ -7,32 +9,88 @@ vocabSize=param['vocabSize']
 sequence_length=param['sequence_length']
 #end
 
-# # model for sentiment analysis on imdb dataset 
-# def classification_model_new_LSTM(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
-#     from tensorflow.keras.activations import relu
-#     from tensorflow.keras.layers import Embedding,LSTM, Dropout, Dense
-#     from tensorflow.keras.models import Sequential
-#     from tensorflow.keras.optimizers import Adam
-#     from tensorflow.keras.utils import plot_model
-#     dropout_rate = 0.3
-#     from tensorflow.keras.activations import relu
-#     activation_func = relu
-#     SCHEMA = [
-#         Embedding( vocabSize , 10, input_length=sequence_length ),
-#         LSTM( 32 ) ,
-#         Dropout(dropout_rate),
-#         Dense( 32 , activation=activation_func ) ,
-#         Dropout(dropout_rate),
-#         Dense(1, activation='sigmoid')
-#     ]
-#     model = Sequential(SCHEMA)
-#     model.compile(
-#         loss='binary_crossentropy',
-#         optimizer=Adam() ,
-#         metrics=[ 'accuracy' ]
-#     )
-#     return model
+# architecture on keras website 
+def architecture1(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
+    from tensorflow.keras import layers
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.models import Sequential
+    SCHEMA = [
+        layers.Embedding( vocabSize , 10, input_length=sequence_length ),
+        layers.Dropout(0.5),
+        layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3),
+        layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3),
+        layers.GlobalMaxPooling1D(),
+        layers.Dense(256, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(128, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(128, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(64, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation="linear", name="predictions")
+    ]
+    model = Sequential(SCHEMA)
+    model.compile(
+        loss='mean_squared_logarithmic_error', 
+        optimizer=Adam(),
+        metrics=['mse']
+    )
+    return model
+
+def architecture2(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
+    from tensorflow.keras import layers
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.models import Sequential
+    SCHEMA = [
+        layers.Embedding( vocabSize , 10, input_length=sequence_length ),
+        layers.Dropout(0.5),
+        layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3),
+        layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3),
+        layers.GlobalMaxPooling1D(),
+        layers.Dense(256, activation="relu"),
+        layers.Dense(128, activation="relu"),
+        layers.Dense(64, activation="relu"),
+        layers.Dense(32, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation="linear", name="predictions")
+    ]
+    model = Sequential(SCHEMA)
+    model.compile(
+        loss='mean_squared_logarithmic_error', 
+        optimizer=Adam(),
+        metrics=['mse']
+    )
+    return model
+
+# model for sentiment analysis on imdb dataset 
+def architecture3(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
+    from tensorflow.keras.activations import relu
+    from tensorflow.keras.layers import Embedding,LSTM, Dropout, Dense
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.utils import plot_model
+    dropout_rate = 0.3
+    from tensorflow.keras.activations import relu
+    activation_func = relu
+    SCHEMA = [
+        Embedding( vocabSize , 10, input_length=sequence_length ),
+        LSTM( 128 ) ,
+        LSTM( 64 ) ,
+        LSTM( 32 ) ,
+        Dropout(dropout_rate),
+        Dense( 32 , activation=activation_func ) ,
+        Dropout(dropout_rate),
+        Dense(1, activation="linear", name="predictions")
+    ]
+    model = Sequential(SCHEMA)
+    model.compile(
+        loss='mean_squared_logarithmic_error', 
+        optimizer=Adam(),
+        metrics=['mse']
+    )
+    return model
 
 def model_framework():
     # this model architecture needs to be changed 
-    return classification_model_new_LSTM(vocabSize=vocabSize, sequence_length=sequence_length,dropout_rate=0.3)
+    return architecture3(vocabSize=vocabSize, sequence_length=sequence_length,dropout_rate=0.3)
