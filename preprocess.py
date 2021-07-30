@@ -78,9 +78,9 @@ def load_data_self_preprocess(processData=True):
         feedback=cleaner()
         if feedback:
             print("successfully created csv files")
-    (xTrain_text, yTrain) = retrieve_data(input_dir=train_path,name="train.csv")
+    (xTrain_text, yTrain) = retrieve_data(input_dir=train_path,name="finalCleanedTrain.csv")
     print ("Retrieved the training data. Now will retrieve the test data in the required format")
-    (xTest_text,yTest) = retrieve_data(input_dir=test_path,name="test.csv")
+    (xTest_text,yTest) = retrieve_data(input_dir=test_path,name="finalCleanedTest.csv")
     print ("Retrieved the test data. Now will initialize the model \n\n")
     print("As per choice we will use vocabulary size as {}".format(vocabSize))
     print('We will try to fit our train data usinf tfidf_vectorizer')
