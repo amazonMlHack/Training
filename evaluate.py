@@ -9,6 +9,8 @@ sequence_length = param['sequence_length']
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import csv
 
 def visualizeTraining(hist):
     h=hist.history
@@ -68,7 +70,28 @@ def saveModelArchitecture():
     model=model_framework()
     plot_model(model,to_file='Results/modelArchitecture_plot.png',show_layer_names=True)
 
-
+import cleanData
+from preprocess import retrieve_data
 def userTest(srcPath):
     # this function should make the predictions file for some test data 
-    return True
+    
+    # get the file whose predictions have to be made
+    filepath = param["testpath"]
+    outputpath = param["outputpath"]
+    
+    # read user test file
+    test = pd.read_csv(filepath, escapechar="\\", quoting=csv.QUOTE_NONE)
+    
+    # cleaning this testData
+    df = cleanData.cleanDataTest(test)
+    testDF = cleanData.concatanateDataSet(df)
+
+    # store into csv
+    testDF.to_csv(outputpath + "finalCleanedTest.csv")
+
+    # prediction
+    X = retrieve_data(outputpath, "finalCleanedTest.csv")
+    model=model_framework()
+    model.load_weights(model_name)
+    predictedOutput=model.predict(X)
+    predict_labels=revert_Y_to_labels(predictedOutput)

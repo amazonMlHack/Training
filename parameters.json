@@ -6,5 +6,7 @@
     "model_name": "best_model.h5",
     "num_of_epochs": 15,
     "processData": 0,
-    "userTest": 0
+    "userTest": 0,
+    "testpath": "./amazonDataset/test.csv",
+    "outputpath": "./Dataset/UserTest/"
 }

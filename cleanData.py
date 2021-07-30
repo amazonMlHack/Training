@@ -189,7 +189,7 @@ def concatanateDataSet(tempDF):
 def cleaner(input_dir='./Dataset/'):
     # read the train and test files *FIll in the corrent Addresses
     train = pd.read_csv('/amazonDataset/train.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
-    test = pd.read_csv('/amazonDataset/train.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
+    test = pd.read_csv('/amazonDataset/test.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
     
     # get cleaned DFs
     tempTrainDF = cleanDataTrain(train)

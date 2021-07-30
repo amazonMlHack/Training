@@ -1,4 +1,5 @@
 import json
+import re
 f = open('userDefinedParameters.json','r')
 param = json.load(f)
 f.close()
@@ -19,9 +20,14 @@ Train - If train is True, both the data and labels are returned. Else only the d
 def retrieve_data(input_dir='./Dataset/',name="train.csv"):
     data_dir = input_dir + name
     data = pd.read_csv(data_dir)
-    X = data['TEXT']
-    Y = data['BROWSE_NODE_ID']
-    return X, Y
+    cols = len(data.columns)
+    if len(cols) == 1:
+        X = data['TEXT']
+        return X
+    if len(cols) == 2:    
+        X = data['TEXT']
+        Y = data['BROWSE_NODE_ID']
+        return X, Y
 
 '''
 TFIDF_PROCESS takes the data to be fit as the input and returns a vectorizer of the tfidf as output
