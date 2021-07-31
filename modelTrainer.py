@@ -1,5 +1,5 @@
 import json
-f = open('paramaters.json','r')
+f = open('parameters.json','r')
 param = json.load(f)
 f.close()
 # will come from json file later
@@ -22,6 +22,7 @@ def trainModel(xTrain,yTrain):
         save_weights_only=False,
         mode="auto"
     )
+    '''
     es_checkpoint=EarlyStopping(
         monitor="val_loss",
         min_delta=0.01,
@@ -31,4 +32,7 @@ def trainModel(xTrain,yTrain):
     )
     hist=model.fit( xTrain, yTrain, batch_size=batch_size, epochs=num_of_epochs,
         validation_split=0.20,callbacks=[checkpoint,es_checkpoint])
+    '''
+    hist=model.fit( xTrain, yTrain, batch_size=batch_size, epochs=num_of_epochs,
+        validation_split=0.20,callbacks=[checkpoint])
     visualizeTraining(hist)

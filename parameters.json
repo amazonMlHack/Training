@@ -4,7 +4,7 @@
     "sequence_length": 100,
     "train": 1,
     "model_name": "best_model.h5",
-    "num_of_epochs": 15,
+    "num_of_epochs": 100,
     "processData": 0,
     "userTest": 0,
     "testpath": "./amazonDataset/test.csv",

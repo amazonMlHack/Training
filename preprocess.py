@@ -1,6 +1,6 @@
 import json
 import re
-f = open('userDefinedParameters.json','r')
+f = open('parameters.json','r')
 param = json.load(f)
 f.close()
 # will come from json file later
@@ -21,12 +21,13 @@ def retrieve_data(input_dir='./Dataset/',name="train.csv"):
     data_dir = input_dir + name
     data = pd.read_csv(data_dir)
     cols = len(data.columns)
-    if len(cols) == 1:
-        X = data['TEXT']
+    if cols == 1:
+        # x = v.fit_transform(df['Review'].values.astype('U'))  ## Even astype(str) would work
+        X = data['TEXT'].astype(str)
         return X
-    if len(cols) == 2:    
-        X = data['TEXT']
-        Y = data['BROWSE_NODE_ID']
+    if cols == 2:    
+        X = data['TEXT'].astype(str)
+        Y = data['BROWSE_NODE_ID'].astype(int)
         return X, Y
 
 '''

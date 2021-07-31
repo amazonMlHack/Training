@@ -22,8 +22,8 @@ def visualizeTraining(hist):
     plt.legend()
     plt.savefig('Results/Loss_Line_Plot.png')
 
-    plt.plot(h['val_accuracy'],label='Validation_Accuracy')
-    plt.plot(h['accuracy'], label='Training_Accuracy')
+    plt.plot(h['val_acc'],label='Validation_Accuracy')
+    plt.plot(h['acc'], label='Training_Accuracy')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
