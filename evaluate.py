@@ -66,7 +66,7 @@ def generateReport(X,Y):
 
 def saveModelArchitecture():
     from keras.utils.vis_utils import plot_model
-    from model_architecture import model_framework
+    from modelArchitecture import model_framework
     model=model_framework()
     plot_model(model,to_file='Results/modelArchitecture_plot.png',show_layer_names=True)
 
