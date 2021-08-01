@@ -30,7 +30,7 @@ def visualizeTraining(hist):
     plt.savefig('Results/Accuracy_Line_Plot.png')
 
 def revert_Y_to_labels(yData):
-    yLabels=[ round(rec)  for rec in yData ]
+    yLabels=[ round(rec[0])  for rec in yData ]
     return np.array(yLabels)
 
 # def generateReport(X,Y):
@@ -92,10 +92,12 @@ def userTest():
     testDF = cleanData.concatanateDataSet(df)
 
     # store into csv
-    testDF.to_csv(outputpath + "finalCleanedTest.csv")
+    testDF.to_csv(outputpath + "finalCleanedTest.csv",index=False)
 
     # prediction
-    xTest_text = retrieve_data(outputpath, "finalCleanedTest.csv")
+    # xTest_text = retrieve_data(outputpath, "finalCleanedTest.csv") # some error was creeping in 
+    data = pd.read_csv(outputpath+"finalCleanedTest.csv")
+    xTest_text = data['TEXT'].astype(str)
 
     intInput = sanityEmbeddings(xTest_text, vectorizer, vectorizer.build_tokenizer())
     intInput = pad_sequences(intInput , maxlen=sequence_length , padding='pre', value=0 )
