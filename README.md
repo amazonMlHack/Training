@@ -15,8 +15,7 @@
 - Run the main.py script to run the test (csv file) thorugh the trained model and get the corresponding results. 
 <pre><code> python main.py</code></pre> 
 
-# Details About Feature Engineering
-## Approach For Data Cleaning 
+## Details About Feature Engineering (Approach For Data Cleaning )
 - We observed the dataset and found alot of 
 - We removed the stopwords
 - We brought the words into actual form using lematizer
