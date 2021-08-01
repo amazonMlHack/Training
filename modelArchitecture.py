@@ -104,6 +104,37 @@ def architecture3(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
     #           metrics=['mae', 'acc'])
     return model
 
+# def custom_activation(x):
+#     from keras import backend as K
+#     return  K.round(x)
+
+def architecture4(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
+    import tensorflow as tf 
+    from tensorflow.keras import layers
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.models import Sequential
+    SCHEMA = [
+        layers.Embedding( vocabSize , 10, input_length=sequence_length ),
+        layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3),
+        layers.GlobalMaxPooling1D(),
+        layers.Dense(256, activation="relu"),
+        layers.Dense(32, activation="relu"),
+        layers.Dense(1,activation="relu", name="predictions"),
+    ]
+    model = Sequential(SCHEMA)
+    # model.compile(
+    #     loss='mean_squared_logarithmic_error', 
+    #     optimizer=Adam(),
+    #     metrics=['mse']
+    # )
+    model.compile(
+        loss='mean_squared_error',# 'mean_squared_logarithmic_error', 
+        optimizer= Adam(),
+        metrics=['mse','acc']
+    )
+    return model
+
+
 def model_framework():
     # this model architecture needs to be changed 
-    return architecture2(vocabSize=vocabSize, sequence_length=sequence_length,dropout_rate=0.3)
+    return architecture4(vocabSize=vocabSize, sequence_length=sequence_length,dropout_rate=0.3)
