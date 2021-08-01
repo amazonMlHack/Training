@@ -1,4 +1,13 @@
 # Amazon ML Hackathon :
+## Folder Structure To Create
+- Create A folder named "Results" to store the images of the model training visualizations
+- Create a folder to store the amazon provided dataset and put the path in "originalDataset" in parameters.json file 
+- Create a folder named Dataset and a folder named UserTest inside Dataset to store cleaned data
+
+## Tools Used
+- Keras, Tensorflow, Pandas,Numpy etc.
+- For detailed list of tools kindly refer requirements.txt
+
 ## Guide to Test The File
 - Update the parameters.json file with the input path and output path.
 - Change the "testpath" field with the path where the test/input file is located. 
@@ -6,6 +15,7 @@
 - Run the main.py script to run the test (csv file) thorugh the trained model and get the corresponding results. 
 <pre><code> python main.py</code></pre> 
 
+# Details About Feature Engineering
 ## Approach For Data Cleaning 
 - We observed the dataset and found alot of 
 - We removed the stopwords

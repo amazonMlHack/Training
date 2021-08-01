@@ -1,8 +1,13 @@
 # Put the notebook cleaning code here 
-
 # also create a dummy function which can process all the cleaning we have done on a single record 
 # with train file name train.csv 
 # with test file name test.csv 
+
+import json
+f = open('parameters.json','r')
+param = json.load(f)
+f.close()
+# will come from json file later
 
 # IMPORTS
 import pandas as pd
@@ -188,8 +193,9 @@ def concatanateDataSet(tempDF):
 # MAIN function
 def cleaner(input_dir='./Dataset/'):
     # read the train and test files *FIll in the corrent Addresses
-    train = pd.read_csv('/amazonDataset/train.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
-    test = pd.read_csv('/amazonDataset/test.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
+    originalDataset=param['originalDataset']
+    train = pd.read_csv(originalDataset +'train.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
+    test = pd.read_csv(originalDataset +'test.csv', escapechar="\\", quoting=csv.QUOTE_NONE)
     
     # get cleaned DFs
     tempTrainDF = cleanDataTrain(train)

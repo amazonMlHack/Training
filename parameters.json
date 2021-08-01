@@ -8,5 +8,6 @@
     "processData": 0,
     "userTest": 0,
     "testpath": "./amazonDataset/test.csv",
-    "outputpath": "./Dataset/UserTest/"
+    "outputpath": "./Dataset/UserTest/",
+    "originalDataset":"/amazonDataset/"
 }
