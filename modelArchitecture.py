@@ -1,4 +1,5 @@
 import json
+import re
 
 from tensorflow.python.keras.layers.core import Dense
 f = open('parameters.json','r')
@@ -104,11 +105,36 @@ def architecture3(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
     #           metrics=['mae', 'acc'])
     return model
 
-# def custom_activation(x):
-#     from keras import backend as K
-#     return  K.round(x)
+import tensorflow as tf
+import math
+def summation(n, x):
+    ans = tf.constant(0)
+    
+    for i in range(1,n+1):
+        a = tf.cast(math.pi, tf.float32)
+        b = tf.cast(tf.math.multiply(tf.cast(i, type(x)),x), tf.float32)
+        c = tf.math.multiply(a,b)
+        d = tf.math.multiply(tf.cast((2*math.pi), type(c)), c)
+        e = tf.math.divide(tf.math.sin(d),tf.cast(i))
+        f = tf.multiply(tf.case(tf.math.pow(1, i), type(e)),e)
+        ans = tf.math.add(tf.cast(ans, type(f)),f)
+
+def roundValue(x):
+    z = tf.math.multiply(tf.cast((1/math.pi), type(summation(5,x))),summation(5,x))
+    return tf.math.add(tf.cast(x,type(z)),z)
+
+def custom_activation(x):
+    from keras import backend as K
+    return roundValue(x)
 
 def architecture4(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
+    # Custom activation function
+    from keras.layers import Activation
+    from keras import backend as K
+    from keras.utils.generic_utils import get_custom_objects
+
+    get_custom_objects().update({'custom_activation': Activation(custom_activation)})
+    
     import tensorflow as tf 
     from tensorflow.keras import layers
     from tensorflow.keras.optimizers import Adam
@@ -120,6 +146,7 @@ def architecture4(vocabSize=5000,sequence_length=120,dropout_rate=0.3):
         layers.Dense(256, activation="relu"),
         layers.Dense(32, activation="relu"),
         layers.Dense(1,activation="relu", name="predictions"),
+        layers.Activation(custom_activation),
     ]
     model = Sequential(SCHEMA)
     # model.compile(
