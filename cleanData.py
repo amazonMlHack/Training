@@ -153,7 +153,7 @@ def cleanDataTrain(dfTrain):
 # 2- For Test
 def cleanDataTest(dfTest):
     # cleaned Dataframe
-    df = pd.DataFrame(columns=['Title', 'Description', 'Bullet Points', 'Brand'])
+    df = pd.DataFrame(columns=['TITLE', 'DESCRIPTION', 'BULLET_POINTS', 'BRAND'])
     count=0
     for ind in dfTest.index:
         count = count + 1
