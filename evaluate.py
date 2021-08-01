@@ -30,7 +30,7 @@ def visualizeTraining(hist):
     plt.savefig('Results/Accuracy_Line_Plot.png')
 
 def revert_Y_to_labels(yData):
-    yLabels=[ round(rec)  for rec in yData ]
+    yLabels=[ round(rec[0])  for rec in yData ]
     return np.array(yLabels)
 
 # def generateReport(X,Y):
@@ -66,32 +66,49 @@ def generateReport(X,Y):
 
 def saveModelArchitecture():
     from keras.utils.vis_utils import plot_model
-    from model_architecture import model_framework
+    from modelArchitecture import model_framework
     model=model_framework()
     plot_model(model,to_file='Results/modelArchitecture_plot.png',show_layer_names=True)
 
 import cleanData
-from preprocess import retrieve_data
-def userTest(srcPath):
+import pickle
+from preprocess import retrieve_data, sanityEmbeddings, pad_sequences
+def userTest():
     # this function should make the predictions file for some test data 
-    
+    with open('vocab.pkl', 'rb') as pklFile:
+        vocab = pickle.load(pklFile)
+
+    with open('vectorizer.pkl', 'rb') as pklFile:
+        vectorizer = pickle.load(pklFile)
+
     # get the file whose predictions have to be made
     filepath = param["testpath"]
     outputpath = param["outputpath"]
     
     # read user test file
     test = pd.read_csv(filepath, escapechar="\\", quoting=csv.QUOTE_NONE)
-    
     # cleaning this testData
     df = cleanData.cleanDataTest(test)
     testDF = cleanData.concatanateDataSet(df)
 
     # store into csv
-    testDF.to_csv(outputpath + "finalCleanedTest.csv")
+    testDF.to_csv(outputpath + "finalCleanedTest.csv",index=False)
 
     # prediction
-    X = retrieve_data(outputpath, "finalCleanedTest.csv")
+    # xTest_text = retrieve_data(outputpath, "finalCleanedTest.csv") # some error was creeping in 
+    data = pd.read_csv(outputpath+"finalCleanedTest.csv")
+    xTest_text = data['TEXT'].astype(str)
+
+    intInput = sanityEmbeddings(xTest_text, vectorizer, vectorizer.build_tokenizer())
+    intInput = pad_sequences(intInput , maxlen=sequence_length , padding='pre', value=0 )
+
+    X=intInput
     model=model_framework()
     model.load_weights(model_name)
     predictedOutput=model.predict(X)
     predict_labels=revert_Y_to_labels(predictedOutput)
+    prod_ids=test['PRODUCT_ID'].astype(int)
+    answerKey={'PRODUCT_ID':prod_ids,'BROWSE_NODE_ID':predict_labels}
+    dfAnswer = pd.DataFrame(answerKey)
+    dfAnswer.to_csv(outputpath+"ANSWERS_TO_TEST.csv")
+
